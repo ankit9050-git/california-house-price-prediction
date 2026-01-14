@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>House Price Prediction</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Inter',sans-serif;
+}
+
+body{
+    min-height:100vh;
+    background:
+        linear-gradient(rgba(0,0,0,0.15), rgba(0,0,0,0.65)),
+        url("static/city.jpeg");
+    background-size:cover;
+    background-position:center;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.main-container{
+    display:flex;
+    gap:60px;
+    align-items:flex-start;
+}
+
+.form-card,
+.map-card{
+   width:520px;
+    padding:35px 32px;
+     border-radius:22px;
+     background: rgba(255,255,255,0.18); 
+     backdrop-filter: blur(16px); 
+     box-shadow: 0 25px 50px rgba(0,0,0,0.45);
+      color:#fff;
+}
+
+.form-card{
+    overflow:hidden;
+}
+
+.map-card{
+    padding:0;
+    overflow:hidden;
+}
+
+.divider{
+    width:2px;
+    height:580px;
+    background: rgba(255,255,255,0.3);
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap:18px;                  /* 👈 MORE SPACE */
+}
+
+.input-group{
+    display:flex;
+    flex-direction:column;
+}
+
+.input-group label{
+    font-size:13px;
+    font-weight:600;
+    margin-bottom:6px;
+}
+
+.input-group input,
+.input-group select{
+    width:100%;                /* 👈 FULL WIDTH */
+    padding:14px 16px;         /* 👈 MORE INNER SPACE */
+    border-radius:12px;
+    border:none;
+    font-size:14px;
+}
+
+.full{
+    grid-column:span 2;
+}
+
+.btn{
+    width:100%;
+    padding:15px;
+    margin-top:22px;
+    border:none;
+    border-radius:14px;
+    font-size:16px;
+    font-weight:700;
+    cursor:pointer;
+    background: linear-gradient(135deg,#00f2fe,#4facfe);
+}
+
+/* RESULT BOX (INSIDE FORM, BELOW BUTTON) */
+.result-box{
+    margin-top:22px;
+    padding:18px;
+    text-align:center;
+    background: linear-gradient(135deg,#00f2fe,#4facfe);
+    border-radius:16px;
+    color:#003344;
+}
+
+.result-box p{
+    font-size:16px;
+    font-weight:600;
+}
+
+.result-box h2{
+    font-size:32px;
+    font-weight:800;
+}
+</style>
+</head>
+
+<body>
+
+<div class="main-container">
+
+    <div class="form-card">
+        <h1 style="text-align:center;margin-bottom:25px;">
+            🏠 California House Price Prediction
+        </h1>
+
+        <form method="POST" action="/" oninput="updateMap()">
+            <div class="form-grid">
+
+                <div class="input-group">
+                    <label>Longitude</label>
+                    <input type="number" step="any" id="longitude" value="-122.23" name="longitude">
+                </div>
+
+                <div class="input-group">
+                    <label>Latitude</label>
+                    <input type="number" step="any" id="latitude" value="37.88" name="latitude">
+                </div>
+
+                <div class="input-group">
+                    <label>Median Age</label>
+                    <input type="number" value="41" name="median_age">
+                </div>
+
+                <div class="input-group">
+                    <label>Total Rooms</label>
+                    <input type="number" value="880" name="total_rooms">
+                </div>
+
+                <div class="input-group">
+                    <label>Total Bedrooms</label>
+                    <input type="number" value="129" name="total_bedrooms">
+                </div>
+
+                <div class="input-group">
+                    <label>Population</label>
+                    <input type="number" value="322" name="population">
+                </div>
+
+                <div class="input-group">
+                    <label>Households</label>
+                    <input type="number" value="126" name="households">
+                </div>
+
+                <div class="input-group">
+                    <label>Median Income</label>
+                    <input type="number" step="any" value="8.3252" name="median_income">
+                </div>
+
+                <div class="input-group full">
+                    <label>Ocean Proximity</label>
+                    <select name="ocean_proximity">
+                        <option>NEAR OCEAN</option>
+                        <option>INLAND</option>
+                        <option>NEAR BAY</option>
+                        <option>ISLAND</option>
+                        <option>1H OCEAN</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <button type="submit" class="btn">Predict Price</button>
+
+            {% if prediction %}
+            <div class="result-box">
+                <p>Predicted House Price</p>
+                <h2>USD {{ prediction }}</h2>
+            </div>
+            {% endif %}
+
+        </form>
+    </div>
+
+    <!-- <div class="divider"></div> -->
+
+    <!-- <div class="map-card">
+        <iframe 
+            id="map"
+            src="https://www.google.com/maps?q=California,USA&z=5&output=embed"
+            width="100%" 
+            height="100%" 
+            style="border:0;"
+            loading="lazy">
+        </iframe>
+    </div> -->
+
+</div>
+
+<script>
+function updateMap(){
+    const lat = document.getElementById("latitude").value;
+    const lng = document.getElementById("longitude").value;
+
+    if(lat && lng){
+        document.getElementById("map").src =
+        `https://www.google.com/maps?q=${lat},${lng}&z=15&output=embed`;
+    }
+}
+</script>
+
+</body>
+</html>
